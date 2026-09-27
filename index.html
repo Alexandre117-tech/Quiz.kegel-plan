@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Kegel - Sexual Wellness Plan</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+    body {
+        font-family: 'Inter', sans-serif;
+        background-color: #ffffff;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+    .theme-dark {
+        background-color: #0d0d0d !important;
+        color: #ffffff !important;
+    }
+    .option-btn {
+        transition: all 0.2s ease-in-out;
+    }
+    .option-btn.selected {
+        background-color: #111827 !important;
+        color: #ffffff !important;
+    }
+    .option-btn.selected .radio-circle {
+        background-color: #ffffff !important;
+        border-color: #ffffff !important;
+        color: #111827 !important;
+    }
+    /* Progress Bar Checkmarks */
+    .progress-dot {
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        font-size: 12px;
+        z-index: 10;
+        transition: all 0.3s ease;
+    }
+    
+    /* Smooth Screen Transitions sem quebrar o fluxo de altura */
+    .screen-view {
+        display: none; /* Esconde por padrão */
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity 0.35s ease-in-out, transform 0.35s ease-in-out;
+    }
+    .screen-view.active {
+        display: block; /* Mostra apenas a ativa no fluxo normal */
+        opacity: 1;
+        transform: translateY(0);
+    }
+    main {
+        flex: 1; /* Faz o main ocupar o espaço central flexível, empurrando o rodapé de forma elegante se necessário */
+    }
+</style>
+</head>
+<body id="app-body" class="min-h-screen flex flex-col text-slate-800 antialiased selection:bg-rose-500 selection:text-white">
+    <!-- Header / Logo Container -->
+    <header class="w-full max-w-xl mx-auto pt-6 px-4 flex flex-col items-center">
+        <!-- Logo -->
+        <div class="flex items-center space-x-3 mb-6">
+            <div id="logo-bg" class="w-10 h-10 bg-black text-white font-bold rounded-xl flex items-center justify-center text-lg shadow-sm">
+                Dr.
+            </div>
+            <div>
+                <h1 id="logo-title" class="font-bold text-slate-900 leading-tight text-base">Dr. Kegel:</h1>
+                <p id="logo-subtitle" class="text-xs text-slate-500">For Men's Health</p>
+            </div>
+        </div>
+
+        <!-- Stepper Progress Bar -->
+        <div id="progress-container" class="w-full max-w-sm hidden my-2">
+            <div class="relative flex items-center justify-between">
+                <!-- Track background line -->
+                <div id="progress-line-bg" class="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-1 bg-slate-200 rounded-full z-0"></div>
+                <!-- Track active fill line -->
+                <div id="progress-line-fill" class="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-black rounded-full z-0 transition-all duration-300" style="width: 0%;"></div>
+
+                <!-- Step 1 Dot -->
+                <div id="dot-1" class="progress-dot bg-black text-white relative">
+                    <span id="dot-1-content">1</span>
+                </div>
+                <!-- Step 2 Dot -->
+                <div id="dot-2" class="progress-dot bg-slate-200 text-slate-500 relative">
+                    <span id="dot-2-content">2</span>
+                </div>
+                <!-- Step 3 Dot -->
+                <div id="dot-3" class="progress-dot bg-slate-200 text-slate-500 relative">
+                    <span id="dot-3-content">3</span>
+                </div>
+                <!-- Step 4 Dot -->
+                <div id="dot-4" class="progress-dot bg-slate-200 text-slate-500 relative">
+                    <span id="dot-4-content">4</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="w-full max-w-xl mx-auto px-4 py-4 flex flex-col justify-start">
+
+        <!-- SCREEN 1: Landing Page -->
+        <div id="screen-1" class="screen-view">
+            <h2 class="text-3xl md:text-4xl font-black text-center text-slate-900 mb-6 tracking-tight">
+                Get Your <span class="text-orange-500">Sexual Wellness</span> Plan
+            </h2>
+
+            <div class="mb-6 max-w-md mx-auto">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fhappy_couple.webp&w=1536&q=100" alt="Happy Couples and Users" class="w-full h-auto object-cover rounded-2xl shadow-sm">
+            </div>
+
+            <div class="mb-6 max-w-md mx-auto">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_benefits.webp&w=1536&q=100" alt="Trusted by over 4 million men" class="w-full h-auto object-contain">
+            </div>
+
+            <h3 class="text-center font-bold text-lg text-slate-900 mb-4">How old are you?</h3>
+            <div class="grid grid-cols-2 gap-3 max-w-md mx-auto">
+                <button onclick="selectAge('25-34')" class="p-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-between px-6 transition">
+                    <span>25-34</span> <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button onclick="selectAge('35-44')" class="p-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-between px-6 transition">
+                    <span>35-44</span> <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button onclick="selectAge('45-55')" class="p-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-between px-6 transition">
+                    <span>45-55</span> <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+                <button onclick="selectAge('55+')" class="p-4 bg-slate-100 hover:bg-slate-200 text-slate-900 font-bold rounded-2xl flex items-center justify-between px-6 transition">
+                    <span>55+</span> <i class="fas fa-chevron-right text-xs text-slate-400"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 2: Choose Main Goal -->
+        <div id="screen-2" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8">Choose your main goal</h2>
+            <div class="space-y-4 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Improve Erectile Function</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Improve Ejaculation Control</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <div>
+                        <div class="font-semibold">Maximize Sexual Wellness</div>
+                        <div class="text-xs text-slate-400 font-normal">(Improve both of the above)</div>
+                    </div>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 3: Sex Duration -->
+        <div id="screen-3" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8">How long does your sex typically last?</h2>
+            <div class="space-y-4 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Less than 2 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>2-7 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>7-15 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>15 minutes or more</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 4: Premature Ejaculation Frequency -->
+        <div id="screen-4" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8">How often do you ejaculate earlier than you'd like?</h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Never</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Rarely</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Often</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>All the time</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 5: Desired Sex Duration -->
+        <div id="screen-5" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8">How long do you want to last?</h2>
+            <div class="space-y-4 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>7-15 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>15-20 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>20-25 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>More than 25 minutes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 6: Dark Video Educational Slide -->
+        <div id="screen-6" class="screen-view text-center">
+            <h2 class="text-xl md:text-2xl font-bold mb-6 text-white leading-snug max-w-lg mx-auto">
+                The ability to <span class="underline underline-offset-4 decoration-slate-500">control ejaculation</span> depends on the strength of the <span class="text-emerald-400">Pelvic Floor (PF) muscles</span>
+            </h2>
+            <div class="relative w-full max-w-md mx-auto rounded-3xl overflow-hidden mb-6 bg-black shadow-2xl">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/video_PE_s1.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+            <p class="text-sm text-slate-300 max-w-md mx-auto">
+                Stronger PF muscles allow to control the ejaculatory reflex better and last longer.
+            </p>
+        </div>
+
+        <!-- SCREEN 7: Dark Video Educational Slide -->
+        <div id="screen-7" class="screen-view text-center">
+            <h2 class="text-xl md:text-2xl font-bold mb-6 text-white leading-snug max-w-lg mx-auto">
+                Erectile function directly depends on the strength and tone of the <span class="text-emerald-400">Pelvic Floor muscles</span>
+            </h2>
+            <div class="relative w-full max-w-md mx-auto rounded-3xl overflow-hidden mb-6 bg-black shadow-2xl">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/video_ED_s1.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+            <p class="text-sm text-slate-300 max-w-md mx-auto">
+                Targeted exercises strengthen these core areas to enhance blood flow and improve rigidity.
+            </p>
+        </div>
+
+        <!-- SCREEN 8: Sex Control Rating -->
+        <div id="screen-8" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How hard is it for you to control your ejaculation during sex?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(8, 1)" class="rating-btn-8 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(8, 2)" class="rating-btn-8 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(8, 3)" class="rating-btn-8 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">3</button>
+                <button onclick="selectRating(8, 4)" class="rating-btn-8 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(8, 5)" class="rating-btn-8 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Not hard</span>
+                <span>Very hard</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 9: Masturbation Control Rating -->
+        <div id="screen-9" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How hard is it for you to control your ejaculation during masturbation?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(9, 1)" class="rating-btn-9 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(9, 2)" class="rating-btn-9 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(9, 3)" class="rating-btn-9 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">3</button>
+                <button onclick="selectRating(9, 4)" class="rating-btn-9 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(9, 5)" class="rating-btn-9 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Not hard</span>
+                <span>Very hard</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 10: Study Fact Dark Screen -->
+        <div id="screen-10" class="screen-view text-center">
+            <div class="inline-flex items-center space-x-2 bg-rose-500/20 text-rose-400 border border-rose-500/30 font-bold text-xs px-3 py-1.5 rounded-full mb-6">
+                <i class="fas fa-gear"></i> <span>STUDY FACT</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-6 max-w-lg mx-auto">
+                <span class="underline">Kegel Exercises</span> strengthen PF muscles, which significantly increases <span class="text-emerald-400">ejaculation control</span>
+            </h2>
+            <div class="max-w-md mx-auto rounded-2xl overflow-hidden mb-6 bg-slate-900 border border-slate-800 p-2 shadow-xl">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_sex_duration_kegels_nokegels.webp&w=1536&q=100" alt="Kegel Graph" class="w-full h-auto rounded-xl">
+            </div>
+            <div class="flex justify-center space-x-6 text-xs text-slate-300 font-semibold mb-2">
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 bg-emerald-500 rounded-md"></span>
+                    <span>With Kegels</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                    <span class="w-3 h-3 bg-rose-500 rounded-md"></span>
+                    <span>No Kegels</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 11: User Survey Loader Screen -->
+        <div id="screen-11" class="screen-view text-center">
+            <div class="inline-flex items-center space-x-2 bg-orange-500 text-white font-bold text-xs px-3 py-1.5 rounded-full mb-6">
+                <i class="fas fa-user"></i> <span>USER SURVEY</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-6 max-w-md mx-auto">
+                <span class="text-emerald-400">8 out of 10</span> men improved their ejaculation control by following <span class="underline">the Kegel Plan</span>
+            </h2>
+
+            <div class="relative w-full max-w-md mx-auto rounded-3xl overflow-hidden mb-6 bg-black shadow-2xl border border-slate-800">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/video_8outof10.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-md mx-auto text-left mb-8 shadow-lg">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex text-emerald-400 space-x-1 text-xs">
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                    </div>
+                    <span class="text-xs text-slate-500 font-semibold">JiggySpot</span>
+                </div>
+                <h4 class="font-bold text-white text-sm mb-1">I'm glad I found these exercises</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    I've been doing Kegel exercises for 2 weeks now and I increased my stamina for real! I feel more confident with my partner. You should try Kegels as well
+                </p>
+            </div>
+
+            <div class="max-w-md mx-auto">
+                <p class="text-xs text-slate-400 mb-2">Connecting to the database</p>
+                <div class="w-full bg-slate-900 h-8 rounded-xl overflow-hidden relative border border-slate-800">
+                    <div id="loader-progress-bar" class="bg-rose-500 h-full w-0 transition-all duration-300"></div>
+                    <span id="loader-text" class="absolute inset-0 flex items-center justify-center text-xs font-bold text-white">0%</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 12: Sex Life Satisfaction Rating -->
+        <div id="screen-12" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How satisfied are you with your sex life in the last 3 months?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(12, 1)" class="rating-btn-12 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(12, 2)" class="rating-btn-12 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(12, 3)" class="rating-btn-12 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(12, 4)" class="rating-btn-12 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(12, 5)" class="rating-btn-12 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Not satisfied</span>
+                <span>Very satisfied</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 13: Worry About Ejaculation Control -->
+        <div id="screen-13" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How much do you worry about ejaculating earlier than you'd like?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(13, 1)" class="rating-btn-13 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(13, 2)" class="rating-btn-13 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(13, 3)" class="rating-btn-13 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(13, 4)" class="rating-btn-13 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(13, 5)" class="rating-btn-13 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>I don't worry</span>
+                <span>I'm very worried</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 14: Impact on Relationship -->
+        <div id="screen-14" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How much do problems with ejaculation control affect the relationship with your partner?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(14, 1)" class="rating-btn-14 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(14, 2)" class="rating-btn-14 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(14, 3)" class="rating-btn-14 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(14, 4)" class="rating-btn-14 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(14, 5)" class="rating-btn-14 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>They don't affect</span>
+                <span>They affect a lot</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 15: Self-Esteem Question -->
+        <div id="screen-15" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                Does your self-esteem suffer from ejaculating earlier than you'd like?
+            </h2>
+            <div class="space-y-4 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, it does</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>No, it doesn't</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 16: Personal Goals Forecast Screen -->
+        <div id="screen-16" class="screen-view text-center">
+            <h2 class="text-2xl font-black text-slate-900 mb-1 max-w-md mx-auto">
+                Based on your personal goals you can
+            </h2>
+            <p class="text-sm font-semibold text-slate-700 mb-1">Improve <span class="font-bold">Ejaculation Control</span></p>
+            <p id="target-date" class="text-lg font-bold text-indigo-600 mb-6">by November 6</p>
+
+            <div class="max-w-md mx-auto rounded-3xl overflow-hidden mb-4 bg-slate-50 border border-slate-200 shadow-sm">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/en/EN_video_graph_pp1.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+            <p class="text-[11px] text-slate-400 mb-8">*for illustration purposes only</p>
+
+            <div class="max-w-md mx-auto text-left">
+                <h3 class="font-bold text-slate-900 text-center text-sm mb-4">Customer reviews</h3>
+                <div class="space-y-3">
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-slate-900 text-sm">Awesome!</span>
+                            <span class="text-xs text-slate-400">Brown</span>
+                        </div>
+                        <div class="flex text-amber-400 text-xs mb-2 space-x-1">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-600">2 weeks and I can already feel improvements 💪</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-slate-900 text-sm">Guys, you must try it</span>
+                            <span class="text-xs text-slate-400">Amteleronnnnn</span>
+                        </div>
+                        <div class="flex text-amber-400 text-xs mb-2 space-x-1">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-600">I followed this kegel plan and now my performance is at its peak! Guys, this is a real game-changer - don't sleep on it</p>
+                    </div>
+
+                    <div class="p-4 bg-slate-50 rounded-2xl border border-slate-100">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-bold text-slate-900 text-sm">Fantastic</span>
+                            <span class="text-xs text-slate-400">Broday56</span>
+                        </div>
+                        <div class="flex text-amber-400 text-xs mb-2 space-x-1">
+                            <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                        </div>
+                        <p class="text-xs text-slate-600">The results are amazing</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 17: Erectile Function Description Screen -->
+        <div id="screen-17" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                How would you describe your Erectile function?
+            </h2>
+            <div class="space-y-4 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Everything's great</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Mostly fine, but sometimes I have problems</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I often have problems</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 18: Difficulty Getting Erection -->
+        <div id="screen-18" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                How often do you experience difficulty getting an erection for sex?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Never</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Rarely</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Often</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>All the time</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 19: Difficulty Maintaining Erection -->
+        <div id="screen-19" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                How often do you experience difficulty maintaining an erection during sex?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Never</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Rarely</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Often</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>All the time</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 20: Sex 2 times in a row -->
+        <div id="screen-20" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                Can you have sex 2 times in a row?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, without any problems</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, but I must try hard</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>No, I can't</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 21: Improve Erectile Function -->
+        <div id="screen-21" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                Do you want to improve your erectile function?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, I'd like to</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>No, I don't want to</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 22: User Survey - Erection Function -->
+        <div id="screen-22" class="screen-view text-center">
+            <div class="inline-flex items-center space-x-2 bg-orange-500 text-white font-bold text-xs px-3 py-1.5 rounded-full mb-6">
+                <i class="fas fa-user"></i> <span>USER SURVEY</span>
+            </div>
+            
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-6 max-w-md mx-auto leading-snug">
+                <span class="text-emerald-400">84% of men</span> improved their erectile function by following <span class="underline">the Kegel Plan</span>
+            </h2>
+
+            <div class="max-w-md mx-auto mb-6">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_erection_84.webp&w=1536&q=100" alt="84% of men improved erection function" class="w-full h-auto rounded-3xl shadow-xl border border-slate-800">
+            </div>
+
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 max-w-md mx-auto text-left mb-8 shadow-lg">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex text-emerald-400 space-x-1 text-xs">
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                        <i class="fas fa-star bg-emerald-500 text-slate-900 p-1 rounded-sm"></i>
+                    </div>
+                    <span class="text-xs text-slate-500 font-semibold">Chauchooo</span>
+                </div>
+                <h4 class="font-bold text-white text-sm mb-1">The effect is great</h4>
+                <p class="text-xs text-slate-400 leading-relaxed">
+                    After 4 weeks of kegels, I have no trouble getting and maintaining erection. If you're struggling as I did, try these exercises
+                </p>
+            </div>
+        </div>
+
+        <!-- SCREEN 23: Libido Rating -->
+        <div id="screen-23" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How would you rate your libido (sex drive) in the last 3 months?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(23, 1)" class="rating-btn-23 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(23, 2)" class="rating-btn-23 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(23, 3)" class="rating-btn-23 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(23, 4)" class="rating-btn-23 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(23, 5)" class="rating-btn-23 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Low</span>
+                <span>High</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 24: Pills for Premature Ejaculation -->
+        <div id="screen-24" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                Do you take any pills for premature ejaculation?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, every time</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I take them sometimes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>No, I don't</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't want to answer</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 25: Pills vs Kegel Plan Comparison -->
+        <div id="screen-25" class="screen-view text-center">
+            <h2 class="text-xl md:text-2xl font-bold text-white mb-6 max-w-md mx-auto">
+                The Kegel Plan is better than pills
+            </h2>
+            <div class="max-w-md mx-auto rounded-3xl overflow-hidden mb-6 border border-slate-800 shadow-2xl">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_pills_vs_kegel_stamina.webp&w=1536&q=100" alt="Pills vs Kegel Plan Comparison" class="w-full h-auto">
+            </div>
+            <div class="bg-slate-900/80 border border-slate-800 rounded-2xl p-4 max-w-md mx-auto flex items-center space-x-3 text-left">
+                <div class="w-8 h-8 rounded-lg bg-slate-800 flex items-center justify-center text-xs text-slate-300 font-bold shrink-0">
+                    NCBI
+                </div>
+                <div>
+                    <span class="text-[10px] text-slate-400 block uppercase tracking-wider font-semibold">Source:</span>
+                    <span class="text-xs text-white font-medium">National Center for Biotechnology Info.</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 26: Alcohol Consumption Frequency -->
+        <div id="screen-26" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                How often do you drink alcohol?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Every day</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Several times a week</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Once a week</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Once a month</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>I don't drink at all</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 27: Smoking Habits -->
+        <div id="screen-27" class="screen-view">
+            <h2 class="text-2xl font-bold text-center text-slate-900 mb-8 max-w-md mx-auto">
+                Do you smoke?
+            </h2>
+            <div class="space-y-3 max-w-md mx-auto">
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Yes, I do</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>No, I don't</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+                <button onclick="selectOption(this)" class="option-btn w-full p-5 bg-slate-100 hover:bg-slate-200 rounded-2xl flex items-center justify-between text-left font-semibold text-slate-800">
+                    <span>Sometimes</span>
+                    <div class="radio-circle w-6 h-6 rounded-full border-2 border-slate-300 flex items-center justify-center bg-white"><i class="fas fa-check text-xs"></i></div>
+                </button>
+            </div>
+        </div>
+
+        <!-- SCREEN 28: Diet Quality Rating -->
+        <div id="screen-28" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How healthy is your diet?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(28, 1)" class="rating-btn-28 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(28, 2)" class="rating-btn-28 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(28, 3)" class="rating-btn-28 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(28, 4)" class="rating-btn-28 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(28, 5)" class="rating-btn-28 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Unhealthy</span>
+                <span>Healthy</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 29: Personal Goals Plan Detail Screen -->
+        <div id="screen-29" class="screen-view text-center">
+            <h2 class="text-2xl font-black text-slate-900 mb-1 max-w-md mx-auto">
+                Based on your personal goals you can
+            </h2>
+            <p class="text-sm font-semibold text-slate-700 mb-6">Improve <span class="font-bold">Ejaculation Control</span></p>
+
+            <div class="max-w-md mx-auto rounded-3xl overflow-hidden mb-2 bg-slate-50 border border-slate-200 shadow-sm">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/en/EN_video_graph_pp2.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+            <p class="text-[11px] text-slate-400 mb-8">*for illustration purposes only</p>
+
+            <div class="max-w-md mx-auto space-y-3 text-left mb-8 px-2">
+                <div class="flex items-center space-x-3 text-slate-800 font-semibold text-sm">
+                    <i class="far fa-clock text-slate-900 text-base"></i>
+                    <span>Duration: <strong class="font-bold">5 min/day</strong></span>
+                </div>
+                <div class="flex items-center space-x-3 text-slate-800 font-semibold text-sm">
+                    <i class="fas fa-dumbbell text-slate-900 text-base"></i>
+                    <span>Equipment: <strong class="font-bold">not needed</strong></span>
+                </div>
+            </div>
+
+            <div class="max-w-md mx-auto bg-slate-50 border-l-4 border-indigo-600 p-4 rounded-r-2xl text-left mb-8 shadow-sm">
+                <p class="text-xs text-slate-700 leading-relaxed">
+                    <strong class="font-bold text-slate-900">Note:</strong> All exercises from the Kegel Plan are discreet to other people. Therefore, you can do them anywhere and at any time
+                </p>
+            </div>
+
+            <div class="max-w-md mx-auto">
+              
+            </div>
+        </div>
+
+        <!-- SCREEN 30: Physical Activity Level -->
+        <div id="screen-30" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                What's your level of physical activity?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(30, 1)" class="rating-btn-30 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(30, 2)" class="rating-btn-30 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(30, 3)" class="rating-btn-30 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(30, 4)" class="rating-btn-30 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(30, 5)" class="rating-btn-30 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Low</span>
+                <span>High</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 31: Daily Stress Level Rating -->
+        <div id="screen-31" class="screen-view text-center">
+            <h2 class="text-2xl font-bold text-slate-900 mb-2 max-w-md mx-auto">
+                How would you rate your daily stress level?
+            </h2>
+            <p class="text-sm text-slate-500 mb-8">Rate from 1 to 5</p>
+            <div class="flex justify-center items-center space-x-3 mb-4 max-w-md mx-auto">
+                <button onclick="selectRating(31, 1)" class="rating-btn-31 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">1</button>
+                <button onclick="selectRating(31, 2)" class="rating-btn-31 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">2</button>
+                <button onclick="selectRating(31, 3)" class="rating-btn-31 w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition">3</button>
+                <button onclick="selectRating(31, 4)" class="rating-btn-31 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">4</button>
+                <button onclick="selectRating(31, 5)" class="rating-btn-31 w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition">5</button>
+            </div>
+            <div class="flex justify-between max-w-xs mx-auto text-xs text-slate-400 font-medium px-2">
+                <span>Low</span>
+                <span>High</span>
+            </div>
+        </div>
+
+        <!-- SCREEN 32: Consent Modal Popup -->
+        <div id="screen-32" class="screen-view relative">
+            <div class="text-center py-12">
+                <h2 class="text-3xl font-bold text-slate-900 mb-8">Preparing your plan</h2>
+                <div class="flex justify-center my-8">
+                    <div class="w-12 h-12 border-4 border-slate-300 border-t-black rounded-full animate-spin"></div>
+                </div>
+            </div>
+
+            <div class="fixed inset-0 bg-black/60 backdrop-blur-md z-50 flex items-center justify-center p-4">
+                <div class="bg-white rounded-3xl p-6 md:p-8 max-w-md w-full shadow-2xl text-slate-800 border border-slate-100">
+                    <div class="flex items-start space-x-3 mb-6">
+                        <input type="checkbox" id="consent-checkbox" onchange="toggleConsent(this)" class="mt-1 w-5 h-5 rounded border-slate-300 text-black focus:ring-black cursor-pointer accent-rose-500">
+                        <label for="consent-checkbox" class="text-xs text-slate-700 font-medium leading-relaxed cursor-pointer select-none">
+                            I consent to Dr. Kegel processing my health onboarding data to provide services and enhance my user experience. <a href="#" class="text-blue-600 underline hover:text-blue-700">Privacy Policy</a>.
+                        </label>
+                    </div>
+                    <button id="consent-continue-btn" disabled onclick="acceptConsentAndAnalyze()" class="w-full py-4 bg-slate-200 text-slate-400 font-bold rounded-2xl flex items-center justify-center space-x-2 transition cursor-not-allowed">
+                        <span>Continue</span>
+                        <i class="fas fa-arrow-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 33: Analyzing Answers -->
+        <div id="screen-33" class="screen-view text-center max-w-md mx-auto relative">
+            <h2 class="text-2xl font-bold text-slate-900 mb-8">Analyzing your answers...</h2>
+
+            <div class="space-y-6 text-left mb-8">
+                <!-- Item 1: Intimate health indicators -->
+                <div>
+                    <div class="flex justify-between items-center mb-1 text-sm font-bold text-slate-900">
+                        <span>Intimate health indicators</span>
+                        <div class="flex items-center space-x-1">
+                            <i id="indicator-spinner-1" class="fas fa-spinner fa-spin text-rose-500 text-xs hidden"></i>
+                            <span id="indicator-percent-1" class="text-slate-900">0%</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="indicator-bar-1" class="bg-slate-900 h-full w-0 transition-all duration-300 ease-out"></div>
+                    </div>
+                </div>
+
+                <!-- Item 2: Sexual behaviours -->
+                <div>
+                    <div class="flex justify-between items-center mb-1 text-sm font-bold text-slate-900">
+                        <span>Sexual behaviours</span>
+                        <div class="flex items-center space-x-1">
+                            <i id="indicator-spinner-2" class="fas fa-spinner fa-spin text-rose-500 text-xs hidden"></i>
+                            <span id="indicator-percent-2" class="text-slate-900">0%</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="indicator-bar-2" class="bg-slate-900 h-full w-0 transition-all duration-300 ease-out"></div>
+                    </div>
+                </div>
+
+                <!-- Item 3: Lifestyle -->
+                <div>
+                    <div class="flex justify-between items-center mb-1 text-sm font-bold text-slate-900">
+                        <span>Lifestyle</span>
+                        <div class="flex items-center space-x-1">
+                            <i id="indicator-spinner-3" class="fas fa-spinner fa-spin text-rose-500 text-xs hidden"></i>
+                            <span id="indicator-percent-3" class="text-slate-900">0%</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="indicator-bar-3" class="bg-slate-900 h-full w-0 transition-all duration-300 ease-out"></div>
+                    </div>
+                </div>
+
+                <!-- Item 4: Creating your plan -->
+                <div>
+                    <div class="flex justify-between items-center mb-1 text-sm font-bold text-slate-900">
+                        <span>Creating your plan</span>
+                        <div class="flex items-center space-x-1">
+                            <i id="indicator-spinner-4" class="fas fa-spinner fa-spin text-rose-500 text-xs hidden"></i>
+                            <span id="indicator-percent-4" class="text-slate-900">0%</span>
+                        </div>
+                    </div>
+                    <div class="w-full bg-slate-100 h-3 rounded-full overflow-hidden">
+                        <div id="indicator-bar-4" class="bg-slate-900 h-full w-0 transition-all duration-300 ease-out"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Review Box -->
+            <div class="bg-slate-50 border border-slate-100 rounded-2xl p-5 text-left shadow-sm">
+                <div class="flex justify-between items-center mb-2">
+                    <div class="flex text-emerald-500 space-x-1 text-xs">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <span class="text-xs text-slate-400 font-semibold">TopicSilly</span>
+                </div>
+                <h4 class="font-bold text-slate-900 text-sm mb-1">Super</h4>
+                <p class="text-xs text-slate-600 leading-relaxed">
+                    I've only started recently but the results are incredible! I can tell that my endurance and performance improved a lot
+                </p>
+            </div>
+
+            <!-- Overlay / Modal central "Your plan is ready!" -->
+            <div id="plan-ready-overlay" class="absolute inset-0 flex flex-col items-center justify-center bg-white/90 backdrop-blur-xs z-30 transition-opacity duration-300 opacity-0 pointer-events-none">
+                <div class="w-16 h-16 bg-rose-500 text-white rounded-full flex items-center justify-center text-2xl shadow-lg mb-4 transform scale-50 transition-transform duration-300" id="plan-ready-icon">
+                    <i class="fas fa-check"></i>
+                </div>
+                <h3 class="text-2xl font-black text-slate-900 tracking-tight transform translate-y-2 transition-transform duration-300" id="plan-ready-text">
+                    Your plan is ready!
+                </h3>
+            </div>
+        </div>
+
+        <!-- SCREEN 34: Video Social Proof / Final Welcome -->
+        <div id="screen-34" class="screen-view text-center max-w-md mx-auto">
+            <h2 class="text-2xl font-black text-slate-900 mb-6 leading-tight">
+                Congratulations on joining the millions of men prioritizing sexual wellness
+            </h2>
+
+            <div class="relative w-full rounded-3xl overflow-hidden mb-6 bg-slate-100 shadow-xl border border-slate-200">
+                <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                    <source src="https://quiz.kegel-plan.me/video/video_reviews_f2.mp4" type="video/mp4">
+                    Your browser does not support video playback.
+                </video>
+            </div>
+
+        
+
+            <div class="flex flex-col items-center justify-center pt-2">
+                <div class="flex items-center justify-center space-x-3">
+                    <i class="fas fa-wheat-awn text-amber-500 text-3xl transform -rotate-45"></i>
+                    <div class="text-center">
+                        <span class="text-xs font-semibold text-slate-600 uppercase tracking-wider block">Trusted by over</span>
+                        <span class="text-3xl font-black text-slate-900 leading-none">4,000,000</span>
+                        <span class="text-xs font-medium text-slate-500 block mt-1">men worldwide</span>
+                    </div>
+                    <i class="fas fa-wheat-awn text-amber-500 text-3xl transform rotate-45 scale-x-[-1]"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 35: Nova Tela Adicionada ("Your Kegel plan will help you to improve:") -->
+        <div id="screen-35" class="screen-view text-center max-w-md mx-auto">
+            <h2 class="text-2xl font-black text-slate-900 mb-8 tracking-tight">
+                Your Kegel plan will help you to improve:
+            </h2>
+
+            <!-- Improvements List -->
+            <div class="space-y-4 mb-10 text-left">
+                <!-- Item 1 -->
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-800 text-lg">
+                            <i class="fas fa-venus-mars"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 text-sm">Ejaculation control</span>
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <!-- Item 2 -->
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-800 text-lg">
+                            <i class="fas fa-mars"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 text-sm">Erectile function</span>
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <!-- Item 3 -->
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-800 text-lg">
+                            <i class="fas fa-shield-heart"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 text-sm">Prostate health</span>
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <!-- Item 4 -->
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-800 text-lg">
+                            <i class="fas fa-thumbs-up"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 text-sm">Confidence</span>
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+
+                <!-- Item 5 -->
+                <div class="bg-slate-50 border border-slate-100 p-4 rounded-2xl flex items-center justify-between shadow-xs">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-10 h-10 bg-slate-100 rounded-xl flex items-center justify-center text-slate-800 text-lg">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <span class="font-bold text-slate-900 text-sm">Relationship happiness</span>
+                    </div>
+                    <div class="w-7 h-7 bg-emerald-100 rounded-full flex items-center justify-center text-emerald-600 text-xs font-bold">
+                        <i class="fas fa-arrow-up"></i>
+                    </div>
+                </div>
+            </div>
+        </div> 
+
+        <!-- SCREEN 36: The best thing? It takes just 5 min a day -->
+        <div id="screen-36" class="screen-view text-center max-w-md mx-auto">
+           
+
+            <h2 class="text-xl md:text-2xl font-black text-slate-900 mb-6 tracking-tight">
+                The best thing? It takes just 5 min a day
+            </h2>
+
+            <div class="w-full rounded-3xl overflow-hidden mb-6 bg-white shadow-xl border border-slate-100">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_5min_day.webp&w=1536&q=100" alt="5 min a day clock" class="w-full h-auto object-cover">
+            </div>
+
+            <div class="flex items-center justify-center space-x-2 text-sm font-semibold text-slate-800 mb-6">
+                <i class="fas fa-dumbbell text-slate-900"></i>
+                <span>Equipment: <strong class="font-bold">not needed</strong></span>
+            </div>
+
+            <div class="bg-slate-50 border-l-4 border-indigo-600 p-4 rounded-r-2xl text-left mb-8 shadow-sm">
+                <p class="text-xs text-slate-700 leading-relaxed italic">
+                    <strong class="font-bold text-slate-900 not-italic">Note:</strong> All exercises from the Kegel Plan are discreet to other people. Therefore, you can do them anywhere and at any time
+                </p>
+            </div>
+        </div>
+<!-- SCREEN 37: Final adjustment -->
+        <div id="screen-37" class="screen-view text-center max-w-md mx-auto px-4 py-2">
+            
+            <!-- Título e Subtítulo -->
+            <h2 class="text-2xl font-black text-slate-900 mb-1 tracking-tight">
+                Final adjustment
+            </h2>
+            <p class="text-sm font-semibold text-slate-700 mb-6">
+                You can Improve <span class="font-bold text-slate-900">Ejaculation Control</span>
+            </p>
+
+            <!-- Cartão do Vídeo -->
+            <div class="bg-slate-50 border border-slate-200/80 rounded-3xl overflow-hidden p-3 shadow-sm mb-4">
+                <div class="rounded-2xl overflow-hidden">
+                    <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                        <source src="https://quiz.kegel-plan.me/video/en/EN_video_graph_final.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                </div>
+                <p class="text-[10px] text-slate-400 mt-2">*for illustration purposes only</p>
+            </div>
+
+            <!-- Cartão de Compatibilidade / Velocímetro SVG Nativo -->
+            <div class="bg-slate-50 border border-slate-200/80 rounded-3xl p-5 shadow-sm">
+                <p class="text-xs font-bold uppercase tracking-wider text-slate-500 mb-2">
+                    Compatibility Score: <span class="text-emerald-600 font-extrabold">High</span>
+                </p>
+
+                <!-- Velocímetro SVG (Garantido a 100% que aparece sem depender de imagens externas) -->
+                <div class="my-2 flex justify-center">
+                    <svg class="w-48 h-24" viewBox="0 0 200 100">
+                        <!-- Arco Vermelho (Esquerda) -->
+                        <path d="M 20 90 A 80 80 0 0 1 70 26.8" fill="none" stroke="#ef4444" stroke-width="16" stroke-linecap="round" />
+                        <!-- Arco Amarelo (Centro) -->
+                        <path d="M 70 26.8 A 80 80 0 0 1 130 26.8" fill="none" stroke="#f59e0b" stroke-width="16" />
+                        <!-- Arco Verde (Direita - Zona Alta) -->
+                        <path d="M 130 26.8 A 80 80 0 0 1 180 90" fill="none" stroke="#10b981" stroke-width="16" stroke-linecap="round" />
+                        <!-- Ponteiro a apontar para a zona verde (87.8%) -->
+                        <line x1="100" y1="90" x2="145" y2="45" stroke="#0f172a" stroke-width="4" stroke-linecap="round" />
+                        <!-- Pino central do ponteiro -->
+                        <circle cx="100" cy="90" r="6" fill="#0f172a" />
+                    </svg>
+                </div>
+
+                <!-- Percentagem Destaque -->
+                <div class="inline-block px-4 py-1.5 bg-emerald-50 border border-emerald-200 text-emerald-600 font-black text-base rounded-xl shadow-sm mb-3">
+                    87.8%
+                </div>
+
+                <!-- Descrição Estatística -->
+                <p class="text-xs text-slate-600 leading-relaxed px-1">
+                    <strong class="font-bold text-slate-900">87.8%</strong> of men from the same age group as you <strong class="font-bold text-slate-900">(35-44 years)</strong> report noticeable improvements by following Kegel Plan.
+                </p>
+                <p class="text-[10px] text-slate-400 mt-2">*statistics from internal survey</p>
+            </div>
+
+        </div>
+        <!-- SCREEN 38: 30-Day Money Back Guarantee -->
+        <div id="screen-38" class="screen-view text-center max-w-md mx-auto">
+            <div class="flex justify-center mb-2 cursor-pointer" onclick="toggleGuaranteeState()">
+                <img id="guarantee-stamp-img" src="https://quiz.kegel-plan.me/images/prepaywall-money-back/stamp-inactive.webp" alt="30-Day Money Back Guarantee Stamp" class="w-40 h-40 object-contain transition-transform transform hover:scale-105">
+            </div>
+            <p id="stamp-hint-text" class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-6 transition-colors">TAP THE STAMP TO ACTIVATE</p>
+
+            <div class="space-y-3 text-left mb-8 px-4">
+                <div class="flex items-center space-x-3 text-slate-800 font-semibold text-sm">
+                    <i class="fas fa-check text-emerald-500 text-lg"></i>
+                    <span>30 days to try everything, risk-free</span>
+                </div>
+                <div class="flex items-center space-x-3 text-slate-800 font-semibold text-sm">
+                    <i class="fas fa-check text-emerald-500 text-lg"></i>
+                    <span>No questions asked — just a simple refund</span>
+                </div>
+            </div>
+
+            <div class="bg-white border border-slate-200 rounded-3xl p-5 shadow-sm mb-8 flex items-center justify-between text-left">
+                <div class="flex items-center space-x-4">
+                    <label class="relative inline-flex items-center cursor-pointer">
+                        <input type="checkbox" id="guarantee-toggle" class="sr-only peer" onchange="toggleGuaranteeCheckbox(this)">
+                        <div class="w-14 h-8 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[4px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-7 after:w-7 after:transition-all peer-checked:bg-emerald-500"></div>
+                    </label>
+                    <div>
+                        <h4 class="font-bold text-slate-900 text-sm">Activate my 30-day money-back guarantee</h4>
+                        <p class="text-xs text-slate-400">Tap to activate — it's our promise to you</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SCREEN 39: Paywall -->
+        <div id="screen-39" class="screen-view max-w-md mx-auto text-left">
+            <div class="bg-rose-50 border border-rose-200 text-rose-600 rounded-2xl p-3 text-center mb-6 font-bold text-xs">
+                35.5% Discount reserved for <span id="paywall-timer" class="text-rose-700">06:50</span>
+            </div>
+
+            <h2 class="text-2xl font-black text-slate-900 text-center mb-6 tracking-tight">
+                Your Personal Plan is Ready!
+            </h2>
+
+            <div class="rounded-3xl overflow-hidden mb-6 border border-slate-200 shadow-sm">
+                <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_beforeafter2.webp&w=1536&q=100" alt="Performance Before and After Plan" class="w-full h-auto object-cover">
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-bold text-slate-900 text-base mb-4 text-center">Areas of Improvements</h3>
+                <div class="bg-slate-50 border border-slate-100 rounded-2xl p-4 space-y-3">
+                    <div class="flex items-center justify-between text-sm font-semibold text-slate-800">
+                        <div class="flex items-center space-x-3"><i class="fas fa-circle-dot text-xs text-emerald-500"></i><span>Erectile function</span></div>
+                        <i class="fas fa-arrow-up text-emerald-500 text-xs"></i>
+                    </div>
+                    <div class="flex items-center justify-between text-sm font-semibold text-slate-800">
+                        <div class="flex items-center space-x-3"><i class="fas fa-circle-dot text-xs text-emerald-500"></i><span>Ejaculation control</span></div>
+                        <i class="fas fa-arrow-up text-emerald-500 text-xs"></i>
+                    </div>
+                    <div class="flex items-center justify-between text-sm font-semibold text-slate-800">
+                        <div class="flex items-center space-x-3"><i class="fas fa-circle-dot text-xs text-emerald-500"></i><span>Prostate health</span></div>
+                        <i class="fas fa-arrow-up text-emerald-500 text-xs"></i>
+                    </div>
+                    <div class="flex items-center justify-between text-sm font-semibold text-slate-800">
+                        <div class="flex items-center space-x-3"><i class="fas fa-circle-dot text-xs text-emerald-500"></i><span>Confidence</span></div>
+                        <i class="fas fa-arrow-up text-emerald-500 text-xs"></i>
+                    </div>
+                    <div class="flex items-center justify-between text-sm font-semibold text-slate-800">
+                        <div class="flex items-center space-x-3"><i class="fas fa-circle-dot text-xs text-emerald-500"></i><span>Relationship happiness</span></div>
+                        <i class="fas fa-arrow-up text-emerald-500 text-xs"></i>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-bold text-slate-900 text-base mb-2 text-center">When to Expect Improvements</h3>
+                <p class="text-xs text-slate-500 text-center mb-4">Based on our data you can reach noticeable improvements</p>
+                <div class="rounded-3xl overflow-hidden border border-slate-200 shadow-sm bg-slate-50">
+                    <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_video_graph_final.webp&w=1536&q=100" alt="Expect Improvements Graph" class="w-full h-auto object-cover">
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl p-5 mb-8">
+                <h3 class="font-black text-slate-900 text-lg text-center mb-4">Get your Personal Kegel Plan</h3>
+                
+                <div class="space-y-3 mb-6">
+                    <div onclick="selectPlan(this)" class="plan-option-card border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between bg-white cursor-pointer transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center radio-indicator"></div>
+                            <div>
+                                <span class="font-bold text-slate-900 text-sm block">1-WEEK PLAN</span>
+                                <span class="text-xs text-slate-400 line-through">14.25 USD</span> <span class="text-xs font-bold text-slate-700">9.19 USD</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 block">2.03 USD</span>
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase">per day</span>
+                        </div>
+                    </div>
+
+                    <div onclick="selectPlan(this)" class="plan-option-card border-2 border-rose-500 rounded-2xl p-4 flex items-center justify-between bg-white cursor-pointer transition relative shadow-sm">
+                        <span class="absolute -top-3 left-4 bg-rose-500 text-white font-black text-[10px] uppercase px-3 py-0.5 rounded-full tracking-wider">Most Popular</span>
+                        <div class="flex items-center space-x-3 mt-1">
+                            <div class="w-5 h-5 rounded-full border-2 border-rose-500 bg-rose-500 flex items-center justify-center radio-indicator text-white text-[10px]"><i class="fas fa-check"></i></div>
+                            <div>
+                                <span class="font-bold text-slate-900 text-sm block">4-WEEK PLAN</span>
+                                <span class="text-xs text-slate-400 line-through">31.00 USD</span> <span class="text-xs font-bold text-slate-700">19.99 USD</span>
+                            </div>
+                        </div>
+                        <div class="text-right mt-1">
+                            <span class="text-xs text-indigo-600 font-bold block">1.10 USD</span>
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase">per day</span>
+                        </div>
+                    </div>
+
+                    <div onclick="selectPlan(this)" class="plan-option-card border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between bg-white cursor-pointer transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center radio-indicator"></div>
+                            <div>
+                                <span class="font-bold text-slate-900 text-sm block">12-WEEK PLAN</span>
+                                <span class="text-xs text-slate-400 line-through">53.00 USD</span> <span class="text-xs font-bold text-slate-700">35.51 USD</span>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs text-slate-400 block">0.63 USD</span>
+                            <span class="text-[10px] text-slate-400 font-semibold uppercase">per day</span>
+                        </div>
+                    </div>
+                </div>
+
+                <p class="text-[11px] text-slate-500 text-center mb-4 leading-relaxed">
+                    30 day money-back guarantee. <a href="#" class="underline">Refund Policy</a>. You'll be charged 19.99 USD today for your first 4 weeks, then 31 USD every 4 weeks until you cancel. Cancel anytime in Billing Center or in the Dr. Kegel app.
+                </p>
+
+                <button onclick="navigateStep(1)" class="w-full py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl transition shadow-lg shadow-rose-500/30 text-center block mb-3 text-base">
+                    Get My Plan
+                </button>
+
+                <div class="flex items-center justify-center space-x-2 text-xs text-slate-500 font-semibold">
+                    <i class="fas fa-shield-alt text-emerald-500"></i>
+                    <span>30-day money-back guarantee</span>
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <h3 class="font-bold text-slate-900 text-base mb-4 text-center">Hear Success Stories From Our Customers</h3>
+                <div class="mb-4">
+                    <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_rating_trusted.webp&w=1536&q=100" alt="Rating Trusted" class="w-full h-auto rounded-2xl shadow-sm">
+                </div>
+            </div>
+
+            <div class="mb-8">
+                <div class="rounded-3xl overflow-hidden shadow-xl border border-slate-200 bg-black relative">
+                    <video autoplay loop muted playsinline class="w-full h-auto object-cover">
+                        <source src="https://quiz.kegel-plan.me/video/video_reviews_landing.mp4" type="video/mp4">
+                        Your browser does not support video playback.
+                    </video>
+                </div>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 mb-6 text-center">
+                <div class="flex justify-center mb-4">
+                    <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fen%2FEN_img_moneyback.webp&w=1536&q=100" alt="Money Back Guarantee Badge" class="w-24 h-24 object-contain">
+                </div>
+                <h4 class="font-black text-slate-900 text-lg mb-2">30-Day Money-Back</h4>
+                <p class="text-xs text-slate-600 leading-relaxed mb-4">
+                    We're confident that our Kegel Plan will work for you and that you can achieve noticeable improvements in a few weeks! We're so confident that we're even ready to return your money without any questions if you don't see noticeable improvements. All you need is to send an email to <span class="font-semibold text-slate-900">contact@kegel-plan.com</span> within 30 days and ask for a refund.
+                </p>
+            </div>
+
+            <div class="text-center pt-2 pb-6">
+                <div class="flex items-center justify-center space-x-2 text-xs font-bold text-slate-500 mb-3">
+                    <i class="fas fa-lock text-slate-700"></i>
+                    <span>Guaranteed Safe Checkout</span>
+                </div>
+                <div class="flex justify-center">
+                    <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fvisa_mc_pp_ae.webp&w=1536&q=100" alt="Visa Mastercard PayPal Amex" class="max-w-xs h-auto object-contain">
+                </div>
+            </div>
+
+            <div class="border-t border-slate-200 pt-6 mt-8 text-[11px] text-slate-400 space-y-4">
+                <p class="leading-relaxed">
+                    Disclaimer: Each individual's results may vary from person to person based on health condition, body type, starting point, his or her unique background, dedication, desire, motivation, actions, and numerous other factors. This service offers health and fitness information and is designed for educational and entertainment purposes only. You should not rely on this information as a substitute for, nor does it replace, professional medical advice, diagnosis, or treatment. It is intended to be provided for informational, educational, and self-empowerment purposes only. If you have any concerns or questions about your health, you should always consult with a physician or other health-care professional.
+                </p>
+                <div class="text-center font-bold text-slate-500">
+                    <p>Appercut sp. z o.o.</p>
+                    <p>Warsaw, Twarda 18, 00-105</p>
+                </div>
+                <div class="flex justify-center space-x-4 text-xs font-semibold pt-2">
+                    <a href="#" class="underline hover:text-slate-600">Privacy Policy</a>
+                    <span>|</span>
+                    <a href="#" class="underline hover:text-slate-600">Terms & Conditions</a>
+                    <span>|</span>
+                    <a href="#" class="underline hover:text-slate-600">Refund Policy</a>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer Sources & Info -->
+    <footer id="landing-footer" class="w-full max-w-2xl mx-auto px-4 py-8 border-t border-slate-100 text-center">
+        <p class="text-xs text-slate-400 font-bold mb-4 tracking-wider">SOURCES:</p>
+        
+        <div class="mb-6 max-w-lg mx-auto">
+            <img src="https://quiz.kegel-plan.me/_vercel/image?url=%2Fimages%2Fsources%2Fimg_source_logos_bw.webp&w=1536&q=100" alt="Sources Logotypes" class="w-full h-auto object-contain opacity-75">
+        </div>
+
+        <div class="text-[10px] text-slate-400 text-left space-y-3 max-w-xl mx-auto leading-relaxed">
+            <p>1. G. Dorey, M. Speakman, R. Feneley, A. Swinkels, C. Dunn, and P. Ewings, (2004). "Randomised controlled trial of pelvic floor muscle exercises and manometric biofeedback for erectile dysfunction"</p>
+            <p>2. H. A. Feldman, I. Goldstein, D. G. Hatzichristou, R. J. Krane, and J. B. McKinlay, (1994). "Impotence and its medical and psychosocial correlates: results of the Massachusetts Male Aging Study"</p>
+            <p>3. M. Crowdis, S. W. Leslie, and S. Nazir, (2023). "Premature Ejaculation"</p>
+            <p>4. J. Gao, X. Zhang, P. Su, K. Shi, D. Tang, Z. Hao, J. Zhou, and C. Liang, (2014). "Prevalence and impact of premature ejaculation in outpatients complaining of ejaculating prematurely: using the instruments of intravaginal ejaculatory latency time and patient-reported outcome measures"</p>
+            <p>5. A. L. Pastore, G. Palleschi, A. Fuschi, C. Maggioni, R. Rago, A. Zucchi, E. Costantini, and A. Carbone, (2014). "Pelvic floor muscle rehabilitation for patients with lifelong premature ejaculation: a novel therapeutic approach"</p>
+            <p>6. A. L. Siegel, (2014). "Pelvic floor muscle training in males: practical applications"</p>
+            <p>7. H. A. Feldman, I. Goldstein, D. G. Hatzichristou, R. J. Krane, and J. B. McKinlay, (1994). "Impotence and its medical and psychosocial correlates: results of the Massachusetts Male Aging Study"</p>
+            <p>8. A. L. Pastore, G. Palleschi, A. Leto, L. Pacini, F. Iori, C. Leonardo, and A. Carbone, (2012). "A prospective randomized study to compare pelvic floor rehabilitation and dapoxetine for treatment of lifelong premature ejaculation"</p>
+            <p>9. D. Cohen, J. Gonzalez, and I. Goldstein, (2016). "The Role of Pelvic Floor Muscles in Male Sexual Dysfunction and Pelvic Pain"</p>
+            <p>10. P. Capogrosso, M. Colicchia, V. Ventimiglia, G. Castagna, M. C. Clementi, N. Suardi, F. Castiglione, A. Briganti, F. Cantiello, R. Salhi, A. Zucchi, G. Bozzini, E. Illiano, E. Costantini, and A. Carbone, (2018). "Pelvic floor rehabilitation as a therapeutic option in lifelong premature ejaculation: long-term outcomes"</p>
+        </div>
+        <p class="text-xs text-slate-400 mt-8">
+            By choosing your age and continuing, you agree to our <a href="#" class="underline">Terms & Conditions</a> | <a href="#" class="underline">Privacy Policy</a>
+        </p>
+        <div class="text-center font-bold text-slate-500 mt-4 text-[11px]">
+            <p>Appercut sp. z o.o.</p>
+            <p>Warsaw, Twarda 18, 00-105</p>
+        </div>
+    </footer>
+
+    <!-- Fixed Bottom Navigation Bar -->
+    <div id="bottom-nav" class="w-full bg-white/90 backdrop-blur-md border-t border-slate-100 py-4 px-4 sticky bottom-0 left-0 right-0 hidden z-50">
+        <div class="max-w-md mx-auto flex items-center justify-center space-x-4">
+            <button id="btn-back" onclick="navigateStep(-1)" class="w-1/2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl flex items-center justify-center space-x-2 transition">
+                <i class="fas fa-arrow-left text-sm"></i>
+                <span>Back</span>
+            </button>
+            <button id="btn-next" onclick="navigateStep(1)" class="w-1/2 py-4 bg-black hover:bg-slate-800 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition shadow-md">
+                <span id="btn-next-text">See my plan</span>
+                <i class="fas fa-arrow-right text-sm"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- Application Script Logic -->
+    <script>
+        let currentScreen = 1;
+        const totalScreens = 39;
+        let loaderTimer = null;
+        let analysisTimer = null;
+        let isGuaranteeActive = false;
+
+        const darkScreens = [6, 7, 10, 11, 22, 25];
+
+        function updateProgressBar() {
+            const container = document.getElementById('progress-container');
+            if (currentScreen === 1 || currentScreen >= 32) {
+                container.classList.add('hidden');
+                return;
+            }
+            container.classList.remove('hidden');
+
+            const fillLine = document.getElementById('progress-line-fill');
+            
+            const quizStartScreen = 2;
+            const quizEndScreen = 31;
+            const totalQuizScreens = (quizEndScreen - quizStartScreen) + 1;
+            
+            let progressPercentage = 0;
+            if (currentScreen >= quizStartScreen && currentScreen <= quizEndScreen) {
+                progressPercentage = ((currentScreen - quizStartScreen + 1) / totalQuizScreens) * 100;
+            } else if (currentScreen > quizEndScreen) {
+                progressPercentage = 100;
+            }
+            
+            fillLine.style.width = `${progressPercentage}%`;
+
+            if (progressPercentage <= 25) {
+                setDotState(1, 'active');
+                setDotState(2, 'inactive');
+                setDotState(3, 'inactive');
+                setDotState(4, 'inactive');
+            } else if (progressPercentage <= 50) {
+                setDotState(1, 'check');
+                setDotState(2, 'active');
+                setDotState(3, 'inactive');
+                setDotState(4, 'inactive');
+            } else if (progressPercentage <= 75) {
+                setDotState(1, 'check');
+                setDotState(2, 'check');
+                setDotState(3, 'active');
+                setDotState(4, 'inactive');
+            } else {
+                setDotState(1, 'check');
+                setDotState(2, 'check');
+                setDotState(3, 'check');
+                setDotState(4, 'active');
+            }
+        }
+
+        function setDotState(dotNum, state) {
+            const dot = document.getElementById(`dot-${dotNum}`);
+            const content = document.getElementById(`dot-${dotNum}-content`);
+            const isDark = darkScreens.includes(currentScreen);
+
+            if (state === 'check') {
+                dot.className = "progress-dot bg-black text-white relative";
+                content.innerHTML = '<i class="fas fa-check text-xs"></i>';
+            } else if (state === 'active') {
+                dot.className = isDark ? "progress-dot bg-rose-500 text-white relative" : "progress-dot bg-black text-white relative";
+                content.innerHTML = dotNum;
+            } else {
+                dot.className = isDark ? "progress-dot bg-slate-800 text-slate-500 relative" : "progress-dot bg-slate-200 text-slate-500 relative";
+                content.innerHTML = dotNum;
+            }
+        }
+
+        function renderScreen(screenNum) {
+            for (let i = 1; i <= totalScreens; i++) {
+                const el = document.getElementById(`screen-${i}`);
+                if (el) el.classList.remove('active');
+            }
+
+            const activeEl = document.getElementById(`screen-${screenNum}`);
+            if (activeEl) activeEl.classList.add('active');
+
+            const body = document.getElementById('app-body');
+            const logoBg = document.getElementById('logo-bg');
+            const logoTitle = document.getElementById('logo-title');
+            const logoSubtitle = document.getElementById('logo-subtitle');
+            const landingFooter = document.getElementById('landing-footer');
+            const bottomNav = document.getElementById('bottom-nav');
+            const btnNext = document.getElementById('btn-next');
+            const btnNextText = document.getElementById('btn-next-text');
+            const btnBack = document.getElementById('btn-back');
+
+            if (darkScreens.includes(screenNum)) {
+                body.classList.add('theme-dark');
+                logoBg.className = "w-10 h-10 bg-white text-black font-bold rounded-xl flex items-center justify-center text-lg shadow-sm";
+                logoTitle.className = "font-bold text-white leading-tight text-base";
+                logoSubtitle.className = "text-xs text-slate-400";
+                bottomNav.className = "w-full bg-black/90 backdrop-blur-md border-t border-slate-800 py-4 px-4 sticky bottom-0 left-0 right-0 z-50";
+                btnBack.className = "w-1/2 py-4 bg-slate-800 hover:bg-slate-700 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition";
+                btnNext.className = "w-1/2 py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition shadow-md";
+            } else {
+                body.classList.remove('theme-dark');
+                logoBg.className = "w-10 h-10 bg-black text-white font-bold rounded-xl flex items-center justify-center text-lg shadow-sm";
+                logoTitle.className = "font-bold text-slate-900 leading-tight text-base";
+                logoSubtitle.className = "text-xs text-slate-500";
+                bottomNav.className = "w-full bg-white/90 backdrop-blur-md border-t border-slate-100 py-4 px-4 sticky bottom-0 left-0 right-0 z-50";
+                btnBack.className = "w-1/2 py-4 bg-slate-100 hover:bg-slate-200 text-slate-800 font-bold rounded-2xl flex items-center justify-center space-x-2 transition";
+                
+                if (screenNum === 16 || screenNum === 29 || screenNum === 37) {
+                    btnNext.className = "w-full py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition shadow-lg shadow-rose-500/30";
+                } else if (screenNum === 35) {
+                    btnNext.className = "w-1/2 py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition shadow-md shadow-rose-500/30";
+                } else if (screenNum === 38) {
+                    updateButtonStyle(btnNext);
+                } else {
+                    btnNext.className = "w-1/2 py-4 bg-black hover:bg-slate-800 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition shadow-md";
+                }
+            }
+
+            if (screenNum === 1) {
+                landingFooter.classList.remove('hidden');
+                bottomNav.classList.add('hidden');
+            } else if (screenNum === 32 || screenNum === 33 || screenNum === 39) {
+                landingFooter.classList.add('hidden');
+                bottomNav.classList.add('hidden');
+            } else {
+                landingFooter.classList.add('hidden');
+                bottomNav.classList.remove('hidden');
+            }
+
+            if (screenNum === 6 || screenNum === 7 || screenNum === 10 || screenNum === 22 || screenNum === 25 || screenNum === 35 || screenNum === 36) {
+                btnNextText.innerText = "I got it";
+            } else if (screenNum === 16 || screenNum === 29 || screenNum === 37) {
+                btnNextText.innerText = "Continue";
+                if (screenNum === 37) {
+                    btnBack.classList.remove('hidden');
+                } else {
+                    btnBack.classList.add('hidden');
+                }
+            } else if (screenNum === 38) {
+                btnNextText.innerText = "See my plan";
+                btnBack.classList.remove('hidden');
+            } else {
+                btnNextText.innerText = "Next";
+                btnBack.classList.remove('hidden');
+            }
+
+            if (screenNum === 11) {
+                startLoader();
+            } else {
+                clearInterval(loaderTimer);
+            }
+
+            if (screenNum === 33) {
+                startAnalysisAnimation();
+            } else {
+                clearInterval(analysisTimer);
+                const overlay = document.getElementById('plan-ready-overlay');
+                if (overlay) {
+                    overlay.classList.add('opacity-0', 'pointer-events-none');
+                    document.getElementById('plan-ready-icon').classList.add('scale-50');
+                    document.getElementById('plan-ready-text').classList.add('translate-y-2');
+                }
+            }
+
+            updateProgressBar();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function selectAge(age) {
+            currentScreen = 2;
+            renderScreen(currentScreen);
+        }
+
+        function selectOption(btn) {
+            const parent = btn.parentElement;
+            const buttons = parent.querySelectorAll('.option-btn');
+            buttons.forEach(b => {
+                b.classList.remove('selected', 'ring-2', 'ring-rose-500');
+            });
+            btn.classList.add('selected');
+        }
+
+        function selectRating(screenNum, rating) {
+            const buttons = document.querySelectorAll(`.rating-btn-${screenNum}`);
+            buttons.forEach((btn, index) => {
+                if (index + 1 === rating) {
+                    btn.className = `rating-btn-${screenNum} w-14 h-14 bg-black text-white font-bold rounded-2xl text-xl transition`;
+                    btn.setAttribute('data-selected', 'true');
+                } else {
+                    btn.className = `rating-btn-${screenNum} w-14 h-14 bg-slate-100 hover:bg-slate-200 font-bold rounded-2xl text-xl text-slate-800 transition`;
+                    btn.removeAttribute('data-selected');
+                }
+            });
+        }
+
+        function validateCurrentScreen() {
+            const activeScreenEl = document.getElementById(`screen-${currentScreen}`);
+            if (!activeScreenEl) return true;
+
+            const optionButtons = activeScreenEl.querySelectorAll('.option-btn');
+            if (optionButtons.length > 0) {
+                const hasSelected = Array.from(optionButtons).some(btn => btn.classList.contains('selected'));
+                if (!hasSelected) {
+                    optionButtons.forEach(b => {
+                        b.classList.add('ring-2', 'ring-rose-500');
+                        setTimeout(() => b.classList.remove('ring-2', 'ring-rose-500'), 800);
+                    });
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        function navigateStep(direction) {
+            if (direction > 0 && !validateCurrentScreen()) {
+                return;
+            }
+
+            currentScreen += direction;
+            if (currentScreen < 1) currentScreen = 1;
+            if (currentScreen > totalScreens) currentScreen = totalScreens;
+            renderScreen(currentScreen);
+        }
+
+        function startLoader() {
+            let width = 0;
+            const bar = document.getElementById('loader-progress-bar');
+            const text = document.getElementById('loader-text');
+            if(loaderTimer) clearInterval(loaderTimer);
+            
+            loaderTimer = setInterval(() => {
+                if (width >= 100) {
+                    clearInterval(loaderTimer);
+                    setTimeout(() => {
+                        currentScreen++;
+                        renderScreen(currentScreen);
+                    }, 500);
+                } else {
+                    width += 2;
+                    if(bar) bar.style.width = width + '%';
+                    if(text) text.innerText = width + '%';
+                }
+            }, 40);
+        }
+
+        function toggleConsent(checkbox) {
+            const btn = document.getElementById('consent-continue-btn');
+            if (checkbox.checked) {
+                btn.disabled = false;
+                btn.className = "w-full py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl flex items-center justify-center space-x-2 transition cursor-pointer shadow-lg shadow-rose-500/30";
+            } else {
+                btn.disabled = true;
+                btn.className = "w-full py-4 bg-slate-200 text-slate-400 font-bold rounded-2xl flex items-center justify-center space-x-2 transition cursor-not-allowed";
+            }
+        }
+
+        function acceptConsentAndAnalyze() {
+            currentScreen++;
+            renderScreen(currentScreen);
+        }
+
+        function startAnalysisAnimation() {
+            for (let i = 1; i <= 4; i++) {
+                document.getElementById(`indicator-bar-${i}`).style.width = '0%';
+                document.getElementById(`indicator-percent-${i}`).innerText = '0%';
+                document.getElementById(`indicator-spinner-${i}`).classList.add('hidden');
+            }
+
+            const overlay = document.getElementById('plan-ready-overlay');
+            const icon = document.getElementById('plan-ready-icon');
+            const text = document.getElementById('plan-ready-text');
+
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            icon.classList.add('scale-50');
+            text.classList.add('translate-y-2');
+
+            let currentBar = 1;
+            let currentVal = 0;
+
+            if (analysisTimer) clearInterval(analysisTimer);
+
+            document.getElementById(`indicator-spinner-1`).classList.remove('hidden');
+
+            analysisTimer = setInterval(() => {
+                currentVal += 1;
+
+                if (currentVal <= 100) {
+                    document.getElementById(`indicator-bar-${currentBar}`).style.width = currentVal + '%';
+                    document.getElementById(`indicator-percent-${currentBar}`).innerText = currentVal + '%';
+                }
+
+                if (currentVal >= 100) {
+                    document.getElementById(`indicator-spinner-${currentBar}`).classList.add('hidden');
+                    currentBar++;
+                    currentVal = 0;
+
+                    if (currentBar <= 4) {
+                        document.getElementById(`indicator-spinner-${currentBar}`).classList.remove('hidden');
+                    } else {
+                        clearInterval(analysisTimer);
+
+                        overlay.classList.remove('opacity-0', 'pointer-events-none');
+                        icon.classList.remove('scale-50');
+                        text.classList.remove('translate-y-2');
+
+                        setTimeout(() => {
+                            currentScreen++;
+                            renderScreen(currentScreen);
+                        }, 1500);
+                    }
+                }
+            }, 35);
+        }
+
+        function toggleGuaranteeState() {
+            isGuaranteeActive = !isGuaranteeActive;
+            const stampImg = document.getElementById('guarantee-stamp-img');
+            const hintText = document.getElementById('stamp-hint-text');
+            const toggle = document.getElementById('guarantee-toggle');
+
+            if (isGuaranteeActive) {
+                stampImg.src = "https://quiz.kegel-plan.me/images/prepaywall-money-back/stamp-active.webp";
+                hintText.innerText = "GUARANTEE ACTIVATED SUCCESSFULLY";
+                hintText.className = "text-xs font-bold text-emerald-500 uppercase tracking-wider mb-6 transition-colors";
+                if(toggle) toggle.checked = true;
+            } else {
+                stampImg.src = "https://quiz.kegel-plan.me/images/prepaywall-money-back/stamp-inactive.webp";
+                hintText.innerText = "TAP THE STAMP TO ACTIVATE";
+                hintText.className = "text-xs font-bold text-slate-400 uppercase tracking-wider mb-6 transition-colors";
+                if(toggle) toggle.checked = false;
+            }
+        }
+
+        function toggleGuaranteeCheckbox(checkbox) {
+            isGuaranteeActive = checkbox.checked;
+            const stampImg = document.getElementById('guarantee-stamp-img');
+            const hintText = document.getElementById('stamp-hint-text');
+
+            if (isGuaranteeActive) {
+                stampImg.src = "https://quiz.kegel-plan.me/images/prepaywall-money-back/stamp-active.webp";
+                hintText.innerText = "GUARANTEE ACTIVATED SUCCESSFULLY";
+                hintText.className = "text-xs font-bold text-emerald-500 uppercase tracking-wider mb-6 transition-colors";
+            } else {
+                stampImg.src = "https://quiz.kegel-plan.me/images/prepaywall-money-back/stamp-inactive.webp";
+                hintText.innerText = "TAP THE STAMP TO ACTIVATE";
+                hintText.className = "text-xs font-bold text-slate-400 uppercase tracking-wider mb-6 transition-colors";
+            }
+        }
+
+        function selectPlan(card) {
+            const cards = document.querySelectorAll('.plan-option-card');
+            cards.forEach(c => {
+                c.className = "plan-option-card border-2 border-slate-200 rounded-2xl p-4 flex items-center justify-between bg-white cursor-pointer transition";
+                const indicator = c.querySelector('.radio-indicator');
+                indicator.className = "w-5 h-5 rounded-full border-2 border-slate-300 flex items-center justify-center radio-indicator";
+                indicator.innerHTML = "";
+            });
+            card.className = "plan-option-card border-2 border-rose-500 rounded-2xl p-4 flex items-center justify-between bg-white cursor-pointer transition relative shadow-sm";
+            const activeIndicator = card.querySelector('.radio-indicator');
+            activeIndicator.className = "w-5 h-5 rounded-full border-2 border-rose-500 bg-rose-500 flex items-center justify-center radio-indicator text-white text-[10px]";
+            activeIndicator.innerHTML = '<i class="fas fa-check"></i>';
+        }
+
+        function updateButtonStyle(btn) {
+            btn.className = "w-full py-4 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl transition shadow-lg shadow-rose-500/30 text-base flex items-center justify-center space-x-2";
+        }
+
+        let timeRemaining = 410; // 06:50
+        setInterval(() => {
+            if (timeRemaining > 0) {
+                timeRemaining--;
+                const minutes = Math.floor(timeRemaining / 60);
+                const seconds = timeRemaining % 60;
+                const timerEl = document.getElementById('paywall-timer');
+                if(timerEl) {
+                    timerEl.innerText = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                }
+            }
+        }, 1000);
+
+        renderScreen(currentScreen);
+    </script>
+</body>
+</html>
